@@ -38,8 +38,8 @@ scrape_amazon <- function (ASIN, page_num){
     # Return a tibble
     tibble(review_title,
            review_date,
-           review_text,
            review_star,
+           review_text,
            page = page_num) %>% return()
 }
 
@@ -77,3 +77,29 @@ doc20 %>%
     html_text() -> review_date20
 
 review_date20
+
+
+## phase 2: timer
+ASIN <- "0007477155" # Specify ASIN
+page_range <- 1:10 # Let's say we want to scrape pages 1 to 10
+
+# Create a table that scrambles page numbers using `sample()`
+# For randomising page reads!
+match_key <- tibble(n = page_range,
+                    key = sample(page_range,length(page_range)))
+
+lapply(page_range, function(i){
+    j <- match_key[match_key$n==i,]$key
+    
+    message("Getting page ",i, " of ",length(page_range), "; Actual: page ",j) # Progress bar
+    
+    Sys.sleep(3) # Take a three second break
+    
+    if((i %% 3) == 0){ # After every three scrapes... take another two second break
+        
+        message("Taking a break...") # Prints a 'taking a break' message on your console
+        
+        Sys.sleep(2) # Take an additional two second break
+    }
+    scrape_amazon(ASIN = ASIN, page_num = j) # Scrape
+}) -> output_list
