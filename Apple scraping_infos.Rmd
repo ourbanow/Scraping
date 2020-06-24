@@ -1,0 +1,72 @@
+---
+title: "Apple store scraping"
+author: "ourbanow"
+date: Sys.Date()
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,          # don't show code
+  warning = FALSE,       # don't show warnings
+  message = FALSE,       # don't show messages (less serious warnings)
+  cache = FALSE,         # set to TRUE to save results from last compilation
+  eval = FALSE,
+  fig.align = "center",  # center figures
+  fig.height=4,          # set default figure size
+  fig.width=6
+)
+library(magrittr)           # load libraries you always use here
+
+```
+## Executive summary
+
+This document summarizes the steps to be taken to perform review scraping on the apple app store.  
+When opening the page, more reviews are loaded by scrolling down the page; these are called in queries invisible in page url, but can be access via the "developer tools" panel.  
+
+## Retrieving urls
+
+1. To retrieve the urls to be scraped, navigate to one app page, then click on "See all" reviews  
+2. Open "More tools" >  "Developer tools" or Ctrl + Shift + I  
+3. Scroll down on the app review page  
+4. In the "Network" tab, check the queries which appear last (last loaded). Click on one  
+5. Check the "Response" tab > amongst the called urls the one which has the response with the reviews  
+6. Retrieve the url; analyze the way its built, find the element which indexes the pages  
+
+24/06/2020:  
+```{r}
+app_url <- paste0("https://apps.apple.com/",country,"/app/",app_name,"/",app_id)
+url_reviews <- paste0("https://amp-api.apps.apple.com/v1/catalog/",country,"/apps/",app_id,"/reviews?l=en-US&offset=",offset,"0&platform=web&additionalPlatforms=appletv%2Cipad%2Ciphone%2Cmac")
+```
+
+The first page is actually offset = 0 (that has already been taken into account when building the scraper).
+
+/!\ For each app, for each country, there is no automated way to find the total number of reviews which can be retrieved. It is NOT the total number of reviews shown in the top bar. To find the total number of pages / offset, scroll down as far as possible down the page until it's not possible anymore and take that last number.   
+
+
+## Infos for scraping  
+### Countries  
+
+Germany = "de"
+Austria = "at"
+Switzerland = "chde" or "chfr"
+United Kingdman = "gb"
+Ireland = "ie"
+United States = "us"
+France = "fr"
+Luxemburg = "lu"
+Belgium = "befr" or "benl"
+Spain = "es"
+Poland = "pl"
+
+### Apps
+Home Connect = 901397789
+Haier U+ = 1234474212
+Hoover Wizard = 1004955716
+hOn (Candy Hoover) = 1500597674
+Candy simply-Fi = 905270470
+Miele mobile = 930406907
+Samsung Family Hub (fridge) = 1194886976
+SmartThings (Samsung smart home) = 1222822904
+Samsung Smart Washer = 606131806
