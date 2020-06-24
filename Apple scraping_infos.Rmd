@@ -1,5 +1,5 @@
 ---
-title: "Apple store scraping"
+title: "Apple store scraper"
 author: "ourbanow"
 date: Sys.Date()
 output: html_document
@@ -24,8 +24,9 @@ library(magrittr)           # load libraries you always use here
 
 This document summarizes the steps to be taken to perform review scraping on the apple app store.  
 When opening the page, more reviews are loaded by scrolling down the page; these are called in queries invisible in page url, but can be access via the "developer tools" panel.  
+This document is not meant to bi knited (it won't work).  
 
-## Retrieving urls
+## Retrieving urls & other info
 
 1. To retrieve the urls to be scraped, navigate to one app page, then click on "See all" reviews  
 2. Open "More tools" >  "Developer tools" or Ctrl + Shift + I  
@@ -33,16 +34,38 @@ When opening the page, more reviews are loaded by scrolling down the page; these
 4. In the "Network" tab, check the queries which appear last (last loaded). Click on one  
 5. Check the "Response" tab > amongst the called urls the one which has the response with the reviews  
 6. Retrieve the url; analyze the way its built, find the element which indexes the pages  
+7. Check the authorization in the "Headers" tab, section "Request Headers"
 
 24/06/2020:  
 ```{r}
 app_url <- paste0("https://apps.apple.com/",country,"/app/",app_name,"/",app_id)
+
 url_reviews <- paste0("https://amp-api.apps.apple.com/v1/catalog/",country,"/apps/",app_id,"/reviews?l=en-US&offset=",offset,"0&platform=web&additionalPlatforms=appletv%2Cipad%2Ciphone%2Cmac")
+
+"authorization" = "Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNTkxNzI2MDEyLCJleHAiOjE2MDcyNzgwMTJ9.PF8vc_52NGR-o-E8N-kXKAuky0ikAMmBS79H0oHdbfYtXIxuqeRWhAtvNfmPTwlUs3-o2RHhxNvQGSQ46lk27w"
 ```
 
 The first page is actually offset = 0 (that has already been taken into account when building the scraper).
 
 /!\ For each app, for each country, there is no automated way to find the total number of reviews which can be retrieved. It is NOT the total number of reviews shown in the top bar. To find the total number of pages / offset, scroll down as far as possible down the page until it's not possible anymore and take that last number.   
+
+## Scraper  
+The scraper is in the file "istore_scraper.R"  
+The scraper saves automatically the result of the scraping in a file - the name of said file is printed on the Console at the end of the execution.  
+To load the scraper, use:  
+```{r}
+source("istore_scraper.R")
+```
+
+The scraper takes the following arguments:  
+```{r}
+scrape_istore(app_id, country, total_pages)
+```
+
+To load the file, use  
+```{r}
+reviews <- readRDS("filename.RDS")
+```
 
 
 ## Infos for scraping  
@@ -61,6 +84,7 @@ Spain = "es"
 Poland = "pl"
 
 ### Apps
+
 Home Connect = 901397789
 Haier U+ = 1234474212
 Hoover Wizard = 1004955716
