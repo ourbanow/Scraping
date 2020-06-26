@@ -7,7 +7,7 @@ clean_playstore_reviews <- function(reviews_file, app_id, country){
     rawfile <- fromJSON(txt = reviews_file)
 
     # Retrieve data
-    review_title <- rawfile$score # There is no title
+    review_title <- as.character(rawfile$score) # There is no title
     review_date <- as.POSIXct(rawfile$at, format = "datetime.datetime(%Y, %m, %d, %H, %M, %S)")
     review_star <- rawfile$score
     review_text <- rawfile$content
