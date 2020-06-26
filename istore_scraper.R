@@ -9,8 +9,8 @@ scrape_istore_page <- function(app_id, country, page_number = 1){
     offset <- page_number-1
     url_reviews <- paste0("https://amp-api.apps.apple.com/v1/catalog/",country,"/apps/",app_id,"/reviews?l=en-US&offset=",offset,"0&platform=web&additionalPlatforms=appletv%2Cipad%2Ciphone%2Cmac")
     
-    r<- httr::GET(url_reviews, add_headers('authorization'='Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNTkxNzI2MDEyLCJleHAiOjE2MDcyNzgwMTJ9.PF8vc_52NGR-o-E8N-kXKAuky0ikAMmBS79H0oHdbfYtXIxuqeRWhAtvNfmPTwlUs3-o2RHhxNvQGSQ46lk27w'))
-    retrieve_raw <- content(r, "text", encoding="UTF-8")
+    r<- httr::GET(url_reviews, add_headers('authorization'='Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNTkzMTA5OTE5LCJleHAiOjE2MDg2NjE5MTl9.3tmc6dKMe_czNMgcNSdV0QjHvUGhs4NNnlVbmlnhXT4X4KYntnQgIzXLmShXC0VZ6qcIlE1H7mis_cXDIkMT1g'))
+    retrieve_raw <- httr::content(r, "text")
     retrieve_data <- fromJSON(retrieve_raw)
     my_reviews <- retrieve_data[[2]][[3]]
     
