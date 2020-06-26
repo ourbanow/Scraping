@@ -24,7 +24,7 @@ library(magrittr)           # load libraries you always use here
 
 This document summarizes the steps to be taken to perform review scraping on the apple app store.  
 When opening the page, more reviews are loaded by scrolling down the page; these are called in queries invisible in page url, but can be access via the "developer tools" panel.  
-This document is not meant to bi knited (it won't work).  
+This document is not meant to be knited (it won't work).  
 
 ## Retrieving urls & other info
 
