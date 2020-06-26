@@ -5,11 +5,11 @@ library(jsonlite)
 
 # Individual page scraper
 
-scrape_istore_page <- function(app_id, country, page_number = 1){
+scrape_istore_page <- function(app_id, country, page_number = 1, bearer_token){
     offset <- page_number-1
     url_reviews <- paste0("https://amp-api.apps.apple.com/v1/catalog/",country,"/apps/",app_id,"/reviews?l=en-US&offset=",offset,"0&platform=web&additionalPlatforms=appletv%2Cipad%2Ciphone%2Cmac")
     
-    r<- httr::GET(url_reviews, add_headers('authorization'='Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNTkzMTA5OTE5LCJleHAiOjE2MDg2NjE5MTl9.3tmc6dKMe_czNMgcNSdV0QjHvUGhs4NNnlVbmlnhXT4X4KYntnQgIzXLmShXC0VZ6qcIlE1H7mis_cXDIkMT1g'))
+    r<- httr::GET(url_reviews, add_headers('authorization'= bearer_token))
     retrieve_raw <- httr::content(r, "text")
     retrieve_data <- fromJSON(retrieve_raw)
     my_reviews <- retrieve_data[[2]][[3]]
