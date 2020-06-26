@@ -1,0 +1,54 @@
+---
+title: "Cleaning steps for playstore import"
+author: "ourbanow"
+date: "6/26/2020"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,          # don't show code
+  warning = FALSE,       # don't show warnings
+  message = FALSE,       # don't show messages (less serious warnings)
+  cache = FALSE,         # set to TRUE to save results from last compilation
+  eval = FALSE,
+  fig.align = "center",  # center figures
+  fig.height=4,          # set default figure size
+  fig.width=6
+)
+library(magrittr)           # load libraries you always use here
+
+```
+## Executive summary
+
+This document summarizes the steps to be taken to download the reviews from the Google play store.  
+So it seems nearly impossible to perform a proper scraping with R.  
+However, there is a [python package](https://github.com/JoMingyu/google-play-scraper) made for this. It works, but it returns a table which is unfortunately not properly formatted. This document will describe the cleaning steps as well.  
+This document is not meant to be knited (it won't work).  
+
+## Retrieving the data 
+It must be done in Python.  
+Run the command line in windows as an administrator.  First make sure the scraper package is up to date.  
+`pip install google-play-scraper --upgrade`  
+The formatting of the reviews changes all the time, thus this is a necessary step.  
+
+Run the scraper as described in the github description. At best, save the file for reuse.  
+
+Copy the produced result in Notepad++, save it as a .json file. This will color-code the code.  
+Now the cleaning can begin.  
+
+Here are the steps to be taken *manually in the notepad with the replace function*  
+`replace all ' with ""`  
+`replace all datetime.datetime with "datetime.datetime`  
+`replace all ), " with )", "`  
+`replace all )}  with )"}`  
+`replace all None with "None"`  
+The code should start "getting colors"  
+Then, line by line replace `" with \"` where there are quotes in the text  
+One all this is done, save the file, it can be loaded into R.  
+
+Command line in R to load the file:  
+```{r}
+library(jsonlite)
+reviews <- fromJSON(txt = "filename.json")
+```
