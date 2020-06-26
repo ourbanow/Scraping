@@ -16,7 +16,7 @@ scrape_istore_page <- function(app_id, country, page_number = 1){
     
     # Retrieve data
     review_title <- my_reviews$title
-    review_date <- my_reviews$date
+    review_date <- as.POSIXct(my_reviews$date, format = "%Y-%m-%dT%H:%M:%SZ")
     review_star <- my_reviews$rating
     review_text <- my_reviews$review
     
@@ -24,8 +24,7 @@ scrape_istore_page <- function(app_id, country, page_number = 1){
     tibble(review_title,
            review_date,
            review_star,
-           review_text,
-           page = page_number) %>% return()
+           review_text) %>% return()
     
 }
 
@@ -56,7 +55,7 @@ scrape_istore <- function(app_id, country, total_pages){
     for (val in 2:length(scraped_list)){
         full_tibble <- bind_rows(full_tibble, scraped_list[[val]])
     }
-    filename <- paste0(Sys.Date(),"_",app_id,"_",country,"_",total_pages,"0_Reviews.RDS")
+    filename <- paste0(Sys.Date(),"_istore_",app_id,"_",country,"_",length(full_tibble),"_Reviews.RDS")
     saveRDS(full_tibble, file = filename)
     message("Saved file ",filename)
 }
