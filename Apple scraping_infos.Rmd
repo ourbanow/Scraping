@@ -83,14 +83,3 @@ Belgium = "befr" or "benl"
 Spain = "es"
 Poland = "pl"
 
-### Apps
-
-Home Connect = 901397789
-Haier U+ = 1234474212
-Hoover Wizard = 1004955716
-hOn (Candy Hoover) = 1500597674
-Candy simply-Fi = 905270470
-Miele mobile = 930406907
-Samsung Family Hub (fridge) = 1194886976
-SmartThings (Samsung smart home) = 1222822904
-Samsung Smart Washer = 606131806
