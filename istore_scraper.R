@@ -55,7 +55,7 @@ scrape_istore <- function(app_id, country, total_pages){
     for (val in 2:length(scraped_list)){
         full_tibble <- bind_rows(full_tibble, scraped_list[[val]])
     }
-    filename <- paste0(Sys.Date(),"_istore_",app_id,"_",country,"_",length(full_tibble),"_Reviews.RDS")
+    filename <- paste0(Sys.Date(),"_istore_",app_id,"_",country,"_",dim(full_tibble)[1],"_Reviews.RDS")
     saveRDS(full_tibble, file = filename)
     message("Saved file ",filename)
 }

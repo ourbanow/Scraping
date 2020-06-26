@@ -18,7 +18,7 @@ clean_playstore_reviews <- function(reviews_file, app_id, country){
            review_star,
            review_text)
 
-    filename <- paste0(Sys.Date(),"_playstore_",app_id,"_",country,"_",length(my_tibble),"_Reviews.RDS")
+    filename <- paste0(Sys.Date(),"_playstore_",app_id,"_",country,"_",dim(my_tibble)[1],"_Reviews.RDS")
     saveRDS(my_tibble, file = filename)
     message("Saved file ",filename)
     } 
